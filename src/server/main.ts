@@ -46,6 +46,14 @@ export async function serverListener(
 
   res.setHeader("Access-Control-Allow-Credentials", "true");
 
+  if (req.method == "OPTIONS") {
+    res.statusCode = 200;
+    res.end();
+    
+    return;
+  }
+
+
   if (typeof req.url !== "string") {
     res.statusCode = 400;
 
