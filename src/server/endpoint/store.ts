@@ -2,6 +2,7 @@ import { adminChangePswd } from "../../api/cterm/admin/changepswd";
 import { adminDelUser } from "../../api/cterm/admin/deluser";
 import { adminGetList } from "../../api/cterm/admin/getlist";
 import { adminGrant } from "../../api/cterm/admin/grant";
+import { adminPrefDelete } from "../../api/cterm/admin/pref/delete";
 import { adminPrefGet } from "../../api/cterm/admin/pref/get";
 import { adminPrefSet } from "../../api/cterm/admin/pref/set";
 import { adminRevoke } from "../../api/cterm/admin/revoke";
@@ -221,6 +222,21 @@ export const cTermAPIEval = new Map<string, Endpoint>([
       optionalParams: [{ key: "item", format: "base64" }],
       description: "Used for getting user preferences",
       func: adminPrefGet,
+    },
+  ],
+  [
+    "/admin/pref/delete",
+    {
+      auth: true,
+      admin: true,
+      checkAuth: true,
+      requiredParams: [
+        { key: "user", format: "base64" },
+        { key: "item", format: "base64" },
+      ],
+      optionalParams: [],
+      description: "Used for deleting user preferences",
+      func: adminPrefDelete,
     },
   ],
   [
