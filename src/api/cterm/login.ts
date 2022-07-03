@@ -13,18 +13,5 @@ export async function Login(req: IncomingMessage, res: ServerResponse) {
 
   if (!valid) res.statusCode = 401;
 
-  if (!valid && (await isDisabled(username))) {
-    writeToRes(
-      res,
-      createDataRes(false, false, {
-        title: "Login failed",
-        message:
-          "Your account is disabled. You cannot login or undo this yourself.",
-      })
-    );
-
-    return;
-  }
-
   writeToRes(res, createDataRes({ username }, valid));
 }
