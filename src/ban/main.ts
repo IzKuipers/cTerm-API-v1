@@ -12,6 +12,7 @@ export async function checkBanDB() {
 
 export async function banUser(username: string) {
   const bdb = (await getDB("bans")) as { [key: string]: string[] };
+  const pdb = (await getDB("pref")) as { [key: string]: any };
 
   if (!Array.isArray(bdb["bans"])) {
     checkBanDB();
@@ -24,7 +25,10 @@ export async function banUser(username: string) {
 
     bdb["bans"] = bans;
 
-    const written = await setDB("bans", bdb);
+    pdb[username]["role"] = "banned";
+    pdb[username]["name"] = `banneduser-${username}`;
+
+    const written = (await setDB("bans", bdb)) && (await setDB("pref", pdb));
 
     if (!written) {
       console.log("[BANS] FATAL: could not ban user: database write failed.");
@@ -35,6 +39,7 @@ export async function banUser(username: string) {
 }
 export async function unbanUser(username: string) {
   const bdb = (await getDB("bans")) as { [key: string]: string[] };
+  const pdb = (await getDB("pref")) as { [key: string]: any };
 
   if (!Array.isArray(bdb["bans"])) {
     checkBanDB();
@@ -50,7 +55,10 @@ export async function unbanUser(username: string) {
 
     bdb["bans"] = bans;
 
-    const written = await setDB("bans", bdb);
+    pdb[username]["role"] = "regular";
+    pdb[username]["name"] = username;
+
+    const written = (await setDB("bans", bdb)) && (await setDB("pref", pdb));
 
     if (!written) {
       console.log("[BANS] FATAL: could not unban user: database write failed.");
