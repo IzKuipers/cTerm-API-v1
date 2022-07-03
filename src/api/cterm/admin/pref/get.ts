@@ -11,7 +11,7 @@ import {
 export async function adminPrefGet(req: IncomingMessage, res: ServerResponse) {
   const query = url.parse(req.url as string, true).query;
   const pdb = (await getDB("pref")) as { [key: string]: any };
-  const username = atob(query["username"] as string);
+  const username = atob(query["user"] as string);
   const item = query["item"] as string;
 
   if (!(await userExists(username))) {
